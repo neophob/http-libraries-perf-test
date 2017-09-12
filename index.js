@@ -2,6 +2,7 @@ var http = require('http');
 var axios = require('axios');
 var superagent = require('superagent');
 var request = require('request');
+const rp = require('request-promise');
 
 var nock = require('nock');
 var HOST = 'test-perf';
@@ -47,6 +48,27 @@ suite.add('axios POST request', {
     defer: true,
     fn: (defer) => {
         axios.post('/test').then(() => defer.resolve());
+    }
+});
+
+suite.add('rp json GET request', {
+    defer: true,
+    fn: (defer) => {
+        rp({ method: 'GET', json: true, uri: `http://${HOST}/test` }).then(() => defer.resolve());
+    }
+});
+
+suite.add('rp GET request', {
+    defer: true,
+    fn: (defer) => {
+        rp({ method: 'GET', uri: `http://${HOST}/test` }).then(() => defer.resolve());
+    }
+});
+
+suite.add('rp POST request', {
+    defer: true,
+    fn: (defer) => {
+        rp({ method: 'POST', uri: `http://${HOST}/test` }).then(() => defer.resolve());
     }
 });
 
